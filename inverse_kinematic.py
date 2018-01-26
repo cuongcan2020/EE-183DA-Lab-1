@@ -5,15 +5,12 @@ Date: 1/23/2018
 Usage: The FK is abbreviated of forward kinematic. Here we
 have 4 revolute joints. By inputting four theta angles of
 the joint, we obtain the final position of the end effector
-
-
-
 Variable:
 x_d: desired position of end effector
 x_0: initial position of end effector
 q: an array contains all the angles to get to the x_d
 '''
-from Jacobian import jacobian
+from symbolic_jacobian import Jacobian
 from forward_kinematic import FK
 
 import numpy
@@ -21,6 +18,7 @@ import numpy
 
 
 def IK(x_d):
+    J = Jacobian()
     q_0 =numpy.array([0,0,0,0])
     x_0 =  FK(q_0[0],q_0[1],q_0[2],q_0[3])
     q = q_0
@@ -31,14 +29,14 @@ def IK(x_d):
         t2 = q [1]
         t3 = q [2]
         t4= q[3]
-        J = jacobian (t1,t2,t3,t4)
-        dq = numpy.linalg.pinv(J) * dx
+        J_numeric = J.cal_jacobian (t1, t2, t3, t4)
+        dq = numpy.linalg.pinv(J_numeric) * dx
         q= q + dq.A1
         x= FK(q[0],q[1],q[2],q[3])
         dx = x_d - x
 
         # debug
-        #print (x)
+        print (x)
 
     return (q % (2* numpy.pi))
 
@@ -49,5 +47,3 @@ C =IK(numpy.matrix([[29.99992654],[0],[20.0001102]]))
 print (A)
 print (B)
 print (C)
-
-
