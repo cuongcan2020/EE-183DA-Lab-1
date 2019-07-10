@@ -1,6 +1,4 @@
 '''
-Author: Cuong Hoang
-UID: 004847900
 Date: 1/23/2018
 Usage: the T_matrix takes input from the D-H parameters and feed into
 the matrix we derived in class.
